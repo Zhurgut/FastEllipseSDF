@@ -32,6 +32,7 @@ In order to compute the distance between a point `p` and an ellipse, we need to 
 
 
 $$ evolute(x) = -((r^2 - 1)^\frac{2}{3} - (rx)^\frac{2}{3})^\frac{3}{2} $$
+where $r$ is the ration between the ellipses semi-major and semi-minor axes. 
 
 In the pursuit of a fast ellipse SDF, this function for the evolute is unsuitable due to the fractional powers. Instead we settle for a polynomial approximation. We use the following parabola to approximate the evolute:
 
@@ -51,9 +52,9 @@ approx'(t_x) &= \frac{p_y - approx(t_x)}{p_x - t_x} \\
 \end{aligned}
 $$
 
-Solving this and clamping to 0 from below yields the x coordinate of `t`, the y coordinate can of course be found with $t_y = approx(t_x)$. 
+Solving this and clamping negative values to 0 yields the x coordinate of `t`, the y coordinate can of course be found with $t_y = approx(t_x)$. 
 
-We can find the point between `t` and `p` that `intersect`s the ellipse by first scaling the x coordinate of `p` and `t` by $\frac{1}{r}$. We then solve another quadratic equation to find the point between these scaled points which lies on the unit circle. Scaling the x coordinate of the resulting point by $r$ gives the `intersect` point. Check the reference implementation for details.
+We can find the point between `t` and `p` that `intersect`s the ellipse by first scaling the x coordinate of `p` and `t` by $\frac{1}{r}$. We then solve another quadratic equation to find the point between these scaled points which lies on the unit circle. Scaling the x coordinate of the resulting point by $r$ gives the `intersect` point. Please check the reference implementation for details.
 
 The output of the algorithm is the euclidian distance between `p` and `intersect`. 
 
@@ -62,17 +63,14 @@ The output of the algorithm is the euclidian distance between `p` and `intersect
 ## Performance Comparison
 
 This method can achieve superior performance compared to existing methods thanks to its straightforward non-iterative, branchless approach, which relies only on few divisions, and doesn't rely at all on expensive builtin function like `sin()`, `cos()`, `normalize()` or `pow()`. 
-Additionally, in the case where the ellipse radii are fixed upfront, many parameters can be precomputed. In this case the algorithm requires only one division. 
+Additionally, CheapEvolute is most suitable for situations where the shape of the ellipse is fixed upfront. In that case, many parameters can be precomputed. This significantly reduces the load on the GPU, eliminating 3 of 4 divisions. 
 
 To compare performance, I gathered existing implementations into a single [shadertoy](https://www.shadertoy.com/view/3XGcDV) program and measured how using different algorithms affects FPS. I stress-tested the algorithms on an NVIDIA RTX 5070Ti at 1200x675 resolution by calling the SDF functions within a high-iteration loop. 
 
-CheapEvolute is most suitable for situations where the shape of the ellipse is fixed upfront. In that case, many parameters can be precomputed. This significantly reduces the load on the GPU, eliminating 3 of 4 divisions on the GPU. 
-Here we compare different algorithms in this scenario. For this comparison, 
 
-<div style="display: flex; gap: 20px;">
-  <img src="pictures/fps_general.png" alt="FPS General" height="300">
-  <img src="pictures/fps_fixed.png"   alt="FPS Fixed" height="300">
-</div>
+
+<img src="pictures/fps_general.png" alt="FPS General" height="300">
+<img src="pictures/fps_fixed.png"   alt="FPS Fixed" height="300">
 <br>
 Compared to computing the analytical solution, CheapEvolute achieves a speedup of about 9% in the general case, and about 58% when the ellipse shape is fixed upfront from the GPUs perspective. 
 
@@ -80,13 +78,10 @@ Compared to computing the analytical solution, CheapEvolute achieves a speedup o
 
 The following plots show absolute and relative error. 
 
-The relative error is largest on the x-axis near the ellipses focal point, and decays for points farther away from the ellipse. The absolute error stays below 0.008 and the relative error below 2%. We can see the absolute error drops to zero on the ellipse boundary. 
+The relative error is largest on the x-axis near the ellipses focal point, and decays for points farther away from the ellipse. The absolute error stays below 0.008 and the relative error below 2% in this setup. The absolute error drops to zero on the ellipse boundary. 
 
-<div style="display: flex; gap: 20px;">
-  <img src="pictures/abs_error.png" alt="abs_error" height="300">
-  <img src="pictures/rel_error.png" alt="rel_error" height="300">
-</div>
-  
+<img src="pictures/abs_error.png" alt="abs_error" height="350">
+<img src="pictures/rel_error.png" alt="rel_error" height="350">
 <br>
 <br>
  
@@ -96,5 +91,6 @@ The relative error is largest on the x-axis near the ellipses focal point, and d
  <img src="pictures/p4.png" alt="error" width="600">
 
 ## License & Attribution
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-**Suggested Credit:** CheapEvolute: Fast Ellipse SDF by Damian Camenisch (github.com/zhurgut/FastEllipseSDF)
+This project is licensed under the MIT License - see [LICENSE](LICENSE).
+
+**Suggested Credit:** CheapEvolute: Fast Ellipse SDF by Damian Camenisch (github.com/Zhurgut/FastEllipseSDF)
