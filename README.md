@@ -10,7 +10,6 @@ While only an approximation of the true signed distance, cheapEvolute is smooth 
 
 
 ## Getting Started
-
 | File | Language | Best For |
 | :--- | :--- | :--- |
 | [reference.jl](reference.jl) | Julia | Pseudo-code like reference. |
@@ -72,7 +71,7 @@ To compare performance, I gathered existing implementations into a single [shade
 <img src="pictures/fps_general.png" alt="FPS General" height="300">
 <img src="pictures/fps_fixed.png"   alt="FPS Fixed" height="300">
 <br>
-Compared to computing the analytical solution, CheapEvolute achieves a speedup of about 9% in the general case, and about 58% when the ellipse shape is fixed upfront from the GPUs perspective. 
+Compared to computing the analytical solution, CheapEvolute achieves a speedup of about 9% in the general case, and about 58% when the ellipse shape is fixed upfront from the GPUs perspective. Additional performance can be unlocked by removing instructions related to numerical stability, which may however lead to NaN-values for inputs on the x-axis. 
 
 ## Error Analysis
 
@@ -89,8 +88,3 @@ The relative error is largest on the x-axis near the ellipses focal point, and d
  The following image shows how near the peak of the parabola, the tangent to the parabola and the tangent to the evolute don't quite point in the same direction, leading to an inaccurate distance calculation.
 
  <img src="pictures/p4.png" alt="error" width="600">
-
-## License & Attribution
-This project is licensed under the MIT License - see [LICENSE](LICENSE).
-
-**Suggested Credit:** CheapEvolute: Fast Ellipse SDF by Damian Camenisch (github.com/Zhurgut/FastEllipseSDF)
