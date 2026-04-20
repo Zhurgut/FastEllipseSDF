@@ -207,11 +207,11 @@ end
 
 
 data = [
-    (32.6, 17.5, "Newton Trig, 5 it."), # https://www.shadertoy.com/view/4lsXDN
-    (33.3, 17.7, "Newton No-Trig, 5 it."), # https://www.shadertoy.com/view/tttfzr
-    (45.3, 27.8, "Newton No-Trig optim. 3 it."), # https://www.shadertoy.com/view/tt3yz7
-    (59,   28.3, "Analytical"), # https://www.shadertoy.com/view/4sS3zz
-    (64.4, 44.7, "CheapEvolute")
+    (32.5, 34.7, "Newton Trig, 5 it."), # https://www.shadertoy.com/view/4lsXDN
+    (33.4, 35.2, "Newton No-Trig, 5 it."), # https://www.shadertoy.com/view/tttfzr
+    (45.4, 55.4, "Newton No-Trig optim. 3 it."), # https://www.shadertoy.com/view/tt3yz7
+    (59,   56.4, "Analytical"), # https://www.shadertoy.com/view/4sS3zz
+    (64.5, 89, "CheapEvolute")
 ]
 
 fps_general = [x[1] for x in data]
@@ -219,7 +219,7 @@ fps_fixed = [x[2] for x in data]
 algorithm = [x[3] for x in data]
 
 begin
-    B = bar(title="Performance Comparison General", ylabel="FPS", xrotation=30, xlabel=" ")
+    B = bar(title="Performance Comparison General", ylabel="FPS", xrotation=30, xlabel=" ", ylims=(0,100), legend=:topleft)
     bar!(B, algorithm[1:3], fps_general[1:3], label="Newton")
     bar!(B, [algorithm[4]], [fps_general[4]], label="Analytical")
     bar!(B, [algorithm[5]], [fps_general[5]], label="CheapEvolute")
@@ -228,7 +228,7 @@ begin
 end
 
 begin
-    B = bar(title="Performance Comparison Fixed", ylabel="FPS", xrotation=30, xlabel=" ", ylims=(0, 50))
+    B = bar(title="Performance Comparison Fixed", ylabel="FPS", xrotation=30, xlabel=" ", ylims=(0,100))
     bar!(B, algorithm[1:3], fps_fixed[1:3], label="Newton")
     bar!(B, [algorithm[4]], [fps_fixed[4]], label="Analytical")
     bar!(B, [algorithm[5]], [fps_fixed[5]], label="CheapEvolute")

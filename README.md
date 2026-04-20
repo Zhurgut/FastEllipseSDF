@@ -65,6 +65,7 @@ This method can achieve superior performance compared to existing methods thanks
 Additionally, CheapEvolute is most suitable for situations where the shape of the ellipse is fixed upfront. In that case, many parameters can be precomputed. This significantly reduces the load on the GPU, eliminating 3 of 4 divisions. 
 
 To compare performance, I gathered existing implementations into a single [shadertoy](https://www.shadertoy.com/view/3XGcDV) program and measured how using different algorithms affects FPS. I stress-tested the algorithms on an NVIDIA RTX 5070Ti at 1200x675 resolution by calling the SDF functions within a high-iteration loop. 
+With 5000 iterations, this amounts to $4.05 \cdot 10^9$ distances being calculated per frame. 
 
 
 
