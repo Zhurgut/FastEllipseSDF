@@ -30,12 +30,14 @@ In order to compute the distance between a point `p` and an ellipse, we need to 
 <img src="pictures/p1.png" alt="Geometric Construction" width="600">
 
 
-$$ evolute(x) = -((r^2 - 1)^\frac{2}{3} - (rx)^\frac{2}{3})^\frac{3}{2} $$
-where $r$ is the ration between the ellipses semi-major and semi-minor axes. 
+$evolute(x) = -((r^2 - 1)^\frac{2}{3} - (rx)^\frac{2}{3})^\frac{3}{2}$
+where $r$ is the ratio between the ellipses semi-major and semi-minor axes. 
 
 In the pursuit of a fast ellipse SDF, this function for the evolute is unsuitable due to the fractional powers. Instead we settle for a polynomial approximation. We use the following parabola to approximate the evolute:
 
-$$ approx(x) = Ax^2 + Bx + C = \frac{r^2}{1 - r^2}x^2 + 2rx + 1 - r^2 $$
+$$
+approx(x) = Ax^2 + Bx + C = \frac{r^2}{1 - r^2}x^2 + 2rx + 1 - r^2
+$$
 
 <img src="pictures/p2.png" alt="Geometric Construction" width="600">
 
